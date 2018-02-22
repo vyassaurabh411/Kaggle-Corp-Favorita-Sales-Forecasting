@@ -1,4 +1,13 @@
 
+"""
+A keras feedforrward NN model that uses the same data preparation framework as
+the other lightgbm model.
+
+This script uses following scripts as references:
+https://www.kaggle.com/ceshine/lgbm-starter
+https://www.kaggle.com/vrtjso/lgbm-one-step-ahead
+
+"""
 # importing all libraries
 from datetime import date, timedelta
 import pandas as pd
