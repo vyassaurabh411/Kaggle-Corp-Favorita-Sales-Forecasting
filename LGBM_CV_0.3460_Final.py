@@ -1,8 +1,14 @@
 
 """
-This is an upgraded version of Ceshine's LGBM starter script, simply adding more
-average features and weekly average features on it.
+This script scores 0.517 which would have ranked 27th on private leaderboard(~top 1.5%).
+Combining this with other models could score even better rank.
+
+This script uses following scripts as references:
+https://www.kaggle.com/ceshine/lgbm-starter
+https://www.kaggle.com/vrtjso/lgbm-one-step-ahead
+
 """
+
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
@@ -178,15 +184,8 @@ for i in range(16):
         X_val, num_iteration=bst.best_iteration or MAX_ROUNDS))
     n_rounds.append(bst.best_iteration)
 
-# Val period : 2017, 7, 26 (data repeated 10 times)
-# Unweighted validation mse:  0.346526992928
-# Full validation mse:        0.346068824114
-# 'Public' validation mse:    0.317470247945
-# 'Private' validation mse:   0.359734604285
-
 n_public = 5 # Number of days in public test set
 weights=pd.concat([items["perishable"]]) * 0.25 + 1
-
 print("Unweighted validation mse: ", mean_squared_error(
     y_val, np.array(val_pred).transpose()))
 print("Full validation mse:       ", mean_squared_error(
@@ -260,5 +259,4 @@ df_preds.index.set_names(["store_nbr", "item_nbr", "date"], inplace=True)
 
 submission = df_test[["id"]].join(df_preds, how="left").fillna(0)
 submission["unit_sales"] = np.clip(np.expm1(submission["unit_sales"]), 0, 1000)
-# submission.to_csv('lgb_cv_0.3460_full.csv', float_format='%.4f', index=None)
-submission.to_csv('lgb_cv_0.3442_full.csv', float_format='%.4f', index=None)
+submission.to_csv('lgb_cv_0.3460_full.csv', float_format='%.4f', index=None)
